@@ -1,0 +1,93 @@
+Pretraining:
+  Revolution:
+    seed: 3431
+    dim: 5
+    hdim1: 16
+    hdim2: 8
+    kernel_size: 3
+    n_layers: 9
+    max_len: 1000
+    batch_size: 64
+    mask_ratio: 0.3
+    real_mask: 0.8
+    lr: 0.003
+    n_epochs: 50
+    train_num: 40000
+    n_cores: 28
+    device: "cuda"
+  Nystromformer:
+    seed: 3431
+    dim: 5
+    hdim1: 16
+    hdim2: 8
+    kernel_size: 3
+    n_layers: 4
+    n_heads: 4
+    max_len: 1000
+    batch_size: 64
+    mask_ratio: 0.3
+    real_mask: 0.8
+    lr: 0.003
+    n_epochs: 50
+    train_num: 40000
+    n_cores: 28
+    device: "cuda"
+Fine-tuning:
+  Revolution:
+    dim: 5
+    hdim1: 16
+    hdim2: 8
+    kernel_size: 3
+    n_layers: 9
+    max_len: 1000
+    n_class: 49
+    pretrain: True
+    batch_size: 8
+    lr: 0.003
+    n_epochs: 50
+    device: "cuda"
+  Transformer:
+    name: "transformer"
+    dim: 5
+    hdim1: 16
+    hdim2: 8
+    kernel_size: 3
+    n_layers: 4
+    n_heads: 4
+    max_len: 1000
+    n_class: 49
+    pretrain: False
+    batch_size: 8
+    lr: 0.0003
+    n_epochs: 50
+    device: "cuda"
+  Performer:
+    name: "performer"
+    dim: 5
+    hdim1: 16
+    hdim2: 8
+    kernel_size: 3
+    n_layers: 4
+    n_heads: 4
+    max_len: 1000
+    n_class: 49
+    pretrain: False
+    batch_size: 8
+    lr: 0.0003
+    n_epochs: 50
+    device: "cuda"
+  Nystromformer:
+    name: "Nystromformer"
+    dim: 5
+    hdim1: 16
+    hdim2: 8
+    kernel_size: 3
+    n_layers: 4
+    n_heads: 4
+    max_len: 1000
+    n_class: 49
+    pretrain: True
+    batch_size: 8
+    lr: 0.0003
+    n_epochs: 50
+    device: "cuda"
