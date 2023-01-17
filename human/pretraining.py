@@ -10,9 +10,7 @@ import revolution_models
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 from datetime import datetime
-import train_hg38 as train
-import fire
-from vcf_encode import *
+import train
 import random
 import copy
 from pyfaidx import Fasta
