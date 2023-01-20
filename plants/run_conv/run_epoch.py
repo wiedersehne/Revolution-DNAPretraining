@@ -136,7 +136,7 @@ else:
                     '_pro' + str(pre_train_num) + '_pre' + str(pre_mask) + '_L' + str(pre_len) + '_E' + str(pre_load) + \
                     '_S' + str(seed) + '_bs' + str(batch_size) + '_' + str(pre_two_load) + '.pkl'
 
-        net.load_state_dict({k.replace('module.', ''):v for k,v in torch.load(load_path).items()})
+        net.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(load_path).items()})
         log_name1 = log_name0 + '_two' + str(pre_train_num) + '_pre' + str(pre_mask) + '_L' + str(pre_len) + '_E' + str(pre_load) + '_P' + str(pre_two_load)
     else:
         log_name1 = log_name0 + '_nopre'
@@ -214,7 +214,7 @@ for e in range(epoch):
     train_loss_mean = train_loss / train_samples
     train_time = (datetime.now() - start_time).total_seconds()
     loginf('EPOCH:{} -- Train loss:{} -- time:{}'.format(e, train_loss_mean, train_time))
-    if e == 0 and pre_froze:
+    if e < 5 and pre_froze:
         torch.save(net.state_dict(), './train/' + task + '/' + log_name + '_' + str(e) + '.pkl')
 
     with torch.no_grad():
