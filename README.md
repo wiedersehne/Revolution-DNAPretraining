@@ -8,5 +8,6 @@ To get fine-tuning data for Variant Effect Prediction, you need to \
 (1) Download train/val/test from data/human/fine-tuning; \
 (2) Use vcf_Dataset in data_utils.py to create datasets for training. Sequence lengths can be adjusted. The recommended sequence length is 10kbp \
 To get pretraining data for OCRs Prediction, you need to \
+(1)
 
 
