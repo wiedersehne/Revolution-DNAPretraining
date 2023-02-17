@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 
 
-class CDIL_Block(nn.Module):
+class Revolution_Block(nn.Module):
     def __init__(self, c_in, c_out, hdim, ks, dil, dropout):
-        super(CDIL_Block, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv1d(in_channels=c_in, out_channels=hdim, kernel_size=ks, padding='same', dilation=dil, padding_mode='circular', bias=False)
         self.conv2 = nn.Conv1d(in_channels=hdim, out_channels=c_out, kernel_size=ks, padding='same', dilation=dil, padding_mode='circular', bias=False)
         self.dropout = nn.Dropout(dropout)
@@ -23,13 +23,14 @@ class CDIL_Block(nn.Module):
         out = self.dropout(out)
         out = self.batch_norm2(out)
         out = self.nonlinear(out)
+
         res = x if self.res is None else self.res(x)
-        return self.nonlinear(out) + res
+        return out + res
 
 
-class CDIL_Conv(nn.Module):
+class Revolution_Conv(nn.Module):
     def __init__(self, dim_in, dim_out, hdim, ks):
-        super(CDIL_Conv, self).__init__()
+        super().__init__()
         layers = []
         for i in range(len(dim_out)):
             this_in = dim_in if i == 0 else dim_out[i - 1]
@@ -37,7 +38,7 @@ class CDIL_Conv(nn.Module):
             hdim = hdim
             this_dilation = 2 ** i
             this_dropout = 0
-            layers += [CDIL_Block(this_in, this_out, hdim, ks, this_dilation, this_dropout)]
+            layers += [Revolution_Block(this_in, this_out, hdim, ks, this_dilation, this_dropout)]
         self.conv_net = nn.Sequential(*layers)
 
     def forward(self, x):
@@ -48,11 +49,11 @@ class Model4Pretrain(nn.Module):
     def __init__(self, dim, hdim1, hdim2, kernel_size, n_layers):
         super().__init__()
 
-        self.cdilNet = CDIL_Conv(dim, [hdim1]*n_layers, hdim1*2, kernel_size)
+        self.cdilNet = Revolution_Conv(dim, [hdim1]*n_layers, hdim1*2, kernel_size)
 
         hidden_list = [hdim2]*n_layers
         hidden_list[-1] = dim
-        self.decoder = CDIL_Conv(hdim1, hidden_list, hdim2*2, kernel_size)
+        self.decoder = Revolution_Conv(hdim1, hidden_list, hdim2*2, kernel_size)
         self.sig = nn.Sigmoid()
 
     def forward(self, x):
@@ -62,14 +63,14 @@ class Model4Pretrain(nn.Module):
         return self.sig(logits_lm.permute(0, 2, 1))
 
 
-class CDIL(nn.Module):
+class Revolution(nn.Module):
     def __init__(self, dim, hdim1, hdim2, n_targets, kernel_size, n_layers, seq_len, center=200):
         super().__init__()
         self.seq_len = seq_len
         self.center = center
 
-        self.cdilNet = CDIL_Conv(dim, [hdim1]*n_layers, hdim1*2, kernel_size)
-        self.cdilNet2 = CDIL_Conv(hdim1, [hdim2] * n_layers, hdim2 * 2, kernel_size)
+        self.cdilNet = Revolution_Conv(dim, [hdim1]*n_layers, hdim1*2, kernel_size)
+        self.cdilNet2 = Revolution_Conv(hdim1, [hdim2] * n_layers, hdim2 * 2, kernel_size)
         self.classifier = nn.Linear(hdim2, n_targets)
         self.sig = nn.Sigmoid()
 

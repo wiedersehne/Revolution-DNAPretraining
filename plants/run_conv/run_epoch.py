@@ -14,7 +14,7 @@ from cython_data import GenomeSequence, GenomicFeatures
 from cython_file import BedFileSampler
 
 from plants import seed_everything, plant_feature, plant_bed
-from model_cdil import CDIL
+from model_revolution import Revolution
 from model_deeperdeepsea import DeeperDeepSEA
 
 
@@ -27,7 +27,6 @@ parser.add_argument('--pre_two_load', type=int, default=0)
 
 parser.add_argument('--pre_plant', type=str, default='ar')  # bd mh sb si zm zs
 parser.add_argument('--pre_len', type=int, default=1000)
-# parser.add_argument('--pre_train_num', type=int, default=512000)
 parser.add_argument('--pre_mask', type=float, default=0.15)
 parser.add_argument('--pre_bs', type=int, default=256)
 parser.add_argument('--pre_load', type=int, default=49)
@@ -38,7 +37,7 @@ parser.add_argument('--pre_de_hide', type=int, default=32)
 parser.add_argument('--seq_len', type=int, default=1000)
 parser.add_argument('--n_train', type=float, default=1)
 
-parser.add_argument('--model', type=str, default='cdil')
+parser.add_argument('--model', type=str, default='revolution')
 parser.add_argument('--model_ks', type=int, default=3)
 parser.add_argument('--hide2', type=int, default=32)
 
@@ -108,9 +107,9 @@ if model == 'deepsea':
     para_num = sum(p.numel() for p in net.parameters() if p.requires_grad)
     log_name1 = 'deepsea'
 else:
-    net = CDIL(input_size, en_hide, hide2, n_feature, model_ks, layer, seq_len)
+    net = Revolution(input_size, en_hide, hide2, n_feature, model_ks, layer, seq_len)
     para_num = sum(p.numel() for p in net.parameters() if p.requires_grad)
-    log_name0 = 'cdil_L' + str(layer) + '_H' + str(en_hide) + 'H' + str(hide2)
+    log_name0 = 'revolution_L' + str(layer) + '_H' + str(en_hide) + 'H' + str(hide2)
 
     if pre_training:
         load_path = './pre/' + pre_task + '/' + pre_log + '_E' + str(pre_load) + '.pkl'

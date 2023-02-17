@@ -1,2 +1,8 @@
-python run_pre.py --pre_mask 0.15 --pre_plant ar
-python run_epoch.py --seed 1 --epoch 20 --pre_plant ar --model cdil --pre_training --pre_mask 0.15
+# without pretrain
+python run_epoch.py --pre_plant ar --model revolution
+
+# with pretrain
+python run_pre.py --pre_plant ar  # pre-train
+python run_epoch.py --pre_plant ar --model revolution --pre_training --pre_froze  # probing
+python run_epoch.py --pre_plant ar --model revolution --pre_training              # fine-tuning
+python run_epoch.py --pre_plant ar --model revolution --pre_two                   # combination

@@ -12,10 +12,10 @@ from cython_file import BedFileSampler
 
 from plants import seed_everything, plant_feature, plant_bed
 from utils_pre import BatchMaking, pretrain_loss
-from model_cdil import Model4Pretrain
+from model_revolution import Model4Pretrain
 
 parser = argparse.ArgumentParser(description='experiment')
-parser.add_argument('--pre_plant', type=str, default='ar')  # bd mh sb si zm zs
+parser.add_argument('--pre_plant', type=str, default='ar')  # ar bd mh sb si zm zs
 parser.add_argument('--pre_len', type=int, default=1000)
 parser.add_argument('--pre_n', type=float, default=1)
 

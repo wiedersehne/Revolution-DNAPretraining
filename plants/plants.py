@@ -4,7 +4,7 @@ import torch
 import random
 import numpy as np
 
-plant_path = '../../'
+plant_path = '../../data/plants/'
 
 
 def seed_everything(seed=1234):
